@@ -19,7 +19,7 @@ const router = createRouter({
     // form test
     ,{
       path: '/form',
-      name: 'home',
+      name: 'form',
       component: () => import('../components/FormItem.vue'),
     }
   ],
