@@ -2,7 +2,22 @@
 </script>
 
 <template>
-    <h1>Form</h1>
+    <div>
+        <form action="">
+            <div>
+                <label for="title">Titre</label>
+                <input type="text" name="title" id="title" placeholder="De quoi s'agit il ?">
+            </div>
+            <div>
+                <label for="content">Contenu</label>
+                <textarea type="text" name="content" id="content" placeholder="Laissez parler votre plume..."></textarea>
+            </div>
+        </form>
+    </div>
+    <div>
+        <button id ="abort">Annuler</button>
+        <button id ="submit">Soumettre</button>
+    </div>
 </template>
 
 <style>

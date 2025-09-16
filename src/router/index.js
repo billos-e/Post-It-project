@@ -16,6 +16,12 @@ const router = createRouter({
       name : 'note',
       component : DetailView,
     }
+    // form test
+    ,{
+      path: '/form',
+      name: 'home',
+      component: () => import('../components/FormItem.vue'),
+    }
   ],
 })
 
