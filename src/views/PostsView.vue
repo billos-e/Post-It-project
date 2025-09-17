@@ -2,24 +2,29 @@
 import HeaderItem from '../components/HeaderItem.vue'
 import FooterItem from '../components/FooterItem.vue'
 import {RouterLink} from 'vue-router'
-import { ref } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+import axios from 'axios'
 
 let posts = ref([]);
 
-(async ()=> {
-  const respo = await fetch('https://post-it.epi-bluelock.bj/notes/')
-  const result= await respo.json()
-  posts.value = result['notes']
-  // console.log(posts);
-  
-})()
-console.log(posts);
+const getAllPosts = async ()=> {
+  const respo = await axios.get('https://post-it.epi-bluelock.bj/notes')
+  posts.value = respo.data.notes
+  // console.log(respo);
 
+}
+console.log(posts);
 
 const addPost = () => {};
 const deleteAll = () => {};
-const deletePost = (id) => {};
+
+const deletePost = async (id) => {
+  await axios.delete(`https://post-it.epi-bluelock.bj/notes/${id}`)
+  getAllPosts()
+};
 const editPost = (id) => {};
+
+onMounted(getAllPosts)
 </script>
 
 <template>
@@ -38,7 +43,7 @@ const editPost = (id) => {};
         </RouterLink>
         <button @click="editPost(post._id)">E</button>
         <button @click="deletePost(post._id)">X</button>
-      </div>  
+      </div>
   </div>
   <FooterItem />
 </template>
