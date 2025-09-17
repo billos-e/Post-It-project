@@ -1,16 +1,21 @@
 <script setup>
+import { ref } from 'vue';
+
+const oldTitle = ref('');
+const oldContent = ref('');
 </script>
 
 <template>
     <div>
+        <!-- add mehtod and submit.prevent -->
         <form action="">
             <div>
                 <label for="title">Titre</label>
-                <input type="text" name="title" id="title" placeholder="De quoi s'agit il ?">
+                <input v-model="oldTitle" type="text" name="title" id="title" placeholder="De quoi s'agit il ?">
             </div>
             <div>
                 <label for="content">Contenu</label>
-                <textarea type="text" name="content" id="content" placeholder="Laissez parler votre plume..."></textarea>
+                <textarea v-model="oldContent" type="text" name="content" id="content" placeholder="Laissez parler votre plume..."></textarea>
             </div>
         </form>
     </div>
