@@ -2,7 +2,7 @@
 import HeaderItem from '../components/HeaderItem.vue'
 import FooterItem from '../components/FooterItem.vue'
 import FormItem from '../components/FormItem.vue'
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 
 import { useRoute, RouterLink } from 'vue-router';
 const route = useRoute()
@@ -14,18 +14,21 @@ let post = ref({});
 (async ()=> {
   const respo = await fetch(`https://post-it.epi-bluelock.bj/notes/${id}`)
   const result= await respo.json()
-  post.value = result
+  post.value = reactive(result)
   console.log(post);
-  
+
 })()
 // console.log(post);
-const showModal = ref(false)
+const showModal = reactive(false)
 
-const deletePost = (id) => {};
+const deletePost = (id) => {
+  
+};
 const editPost = (id) => {};
 const onToggle = () => {
   showModal.value = !showModal.value
 }
+
 </script>
 
 <template>
@@ -37,12 +40,14 @@ const onToggle = () => {
       <span>modifié le : {{ post.updatedAt }}</span>
       <p>{{ post.content[0] }}</p>
     </div>
-    <button @click="editPost(post._id)">E</button>
-    <button @click="deletePost(post._id)">X</button>
+    <button @click="editPost(id)">E</button>
+    <button @click="deletePost(id)">X</button>
   </main>
-  
+
+  <FormItem :post="post.value"/>
+
   <FooterItem />
-  <div id="app">
+  <!--<div id="app">
     <div class="flex flex-col items-center justify-center p-3 min-h-full">
       <h1
         class="my-4 text-3xl text-center font-medium tracking-wider text-purple-700"
@@ -56,7 +61,7 @@ const onToggle = () => {
         Open
       </button>
     </div>
-    <transition name="fade">
+     <transition name="fade">
       <div v-if="showModal">
         <div
           @click="onToggle"
@@ -65,7 +70,7 @@ const onToggle = () => {
         <div
           class="w-full max-w-lg p-3 relative mx-auto my-auto rounded-xl shadow-lg bg-white"
         >
-          <!-- <div>
+          <div>
             <div class="text-center p-3 flex-auto justify-center leading-6">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -97,10 +102,10 @@ const onToggle = () => {
                 Close
               </button>
             </div>
-          </div> -->
-          <FormItem></FormItem>
+          </div>
+          <FormItem />
         </div>
       </div>
     </transition>
-  </div>
+  </div>-->
 </template>

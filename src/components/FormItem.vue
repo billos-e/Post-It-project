@@ -1,6 +1,10 @@
 <script setup>
 import { ref } from 'vue';
+const props = defineProps({
+    post: Object
+})
 
+console.log(props.post.value)
 const oldTitle = ref('');
 const oldContent = ref('');
 </script>
