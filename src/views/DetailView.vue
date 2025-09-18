@@ -2,110 +2,112 @@
 import HeaderItem from '../components/HeaderItem.vue'
 import FooterItem from '../components/FooterItem.vue'
 import FormItem from '../components/FormItem.vue'
-import { ref, reactive } from 'vue';
+import { usePosts } from '@/stores/counter';
+import { ref, reactive, onMounted } from 'vue';
+import { useRoute, useRouter, RouterLink } from 'vue-router';
 
-import { useRoute, RouterLink } from 'vue-router';
+const store = usePosts()
 const route = useRoute()
-// console.log(route.params)
+const router = useRouter()
 const id = route.params.id;
 
-let post = ref({});
+let title = ref('')
+let content = ref('')
+let onEdit = ref(false)
 
-(async ()=> {
-  const respo = await fetch(`https://post-it.epi-bluelock.bj/notes/${id}`)
-  const result= await respo.json()
-  post.value = reactive(result)
-  console.log(post);
-
-})()
-// console.log(post);
-const showModal = reactive(false)
-
-const deletePost = (id) => {
-  
+const deletePost = async(id) => {
+  store.deletePost(id)
+  router.push('/')
 };
-const editPost = (id) => {};
-const onToggle = () => {
-  showModal.value = !showModal.value
-}
 
+const editPost = (id) => {
+
+  onEdit.value = false
+  store.updatePost(id, {
+    "title": title.value,
+    "content": [
+        `${content.value}`
+    ]
+  })
+};
+
+// console.log(store.selectedPost);
+
+
+onMounted(async ()=>{
+  await store.getPost(id)
+  // console.log();
+
+  title.value = store.selectedPost.title
+  content.value = store.selectedPost.content[0]
+})
 </script>
 
 <template>
   <HeaderItem />
   <RouterLink to="/"><-- Retour aux notes</RouterLink>
-  <main>
+  <main v-if="!onEdit">
     <div>
-      <h1 class="font-bold">{{ post.title }}</h1>
-      <span>modifié le : {{ post.updatedAt }}</span>
-      <p>{{ post.content[0] }}</p>
+      <h1 class="font-bold">{{ title }}</h1>
+      <span>modifié le : {{ store.selectedPost.updatedAt }}</span>
+      <p>{{ content }}</p>
     </div>
-    <button @click="editPost(id)">E</button>
+
+    <button @click="onEdit = true" class="rounded-md bg-gray-950/5 px-2.5 py-1.5 text-sm font-semibold text-gray-900 hover:bg-gray-950/10">E</button>
     <button @click="deletePost(id)">X</button>
   </main>
+  <div v-else-if="onEdit">
+    <div class="sm:flex sm:items-start">
+      <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+        <h3 id="dialog-title" class="text-base font-semibold text-gray-900">Ajouter un post</h3>
+        <div class="mt-2">
+          <label for="title">
+            <span class="text-sm font-medium text-gray-700"> Titre </span>
 
-  <FormItem :post="post.value"/>
+            <input
+              type="text"
+              id="title"
+              class="mt-0.5 w-full rounded border px-4 py-3 border-gray-300 shadow-sm sm:text-sm"
+              v-model="title"
+              placeholder="Court et descriptif"
+            />
+          </label>
+          <label for="content">
+            <span class="text-sm font-medium text-gray-700"> Contenu </span>
 
-  <FooterItem />
-  <!--<div id="app">
-    <div class="flex flex-col items-center justify-center p-3 min-h-full">
-      <h1
-        class="my-4 text-3xl text-center font-medium tracking-wider text-purple-700"
-      >
-        Vue.js Modal transition
-      </h1>
-      <button
-        @click="onToggle"
-        class="bg-purple-500 border border-purple-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-purple-600"
-      >
-        Open
-      </button>
-    </div>
-     <transition name="fade">
-      <div v-if="showModal">
-        <div
-          @click="onToggle"
-          class="absolute bg-black opacity-70 inset-0 z-0"
-        ></div>
-        <div
-          class="w-full max-w-lg p-3 relative mx-auto my-auto rounded-xl shadow-lg bg-white"
-        >
-          <div>
-            <div class="text-center p-3 flex-auto justify-center leading-6">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-16 h-16 flex items-center text-purple-500 mx-auto"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              <h2 class="text-2xl font-bold py-4">Are you sure?</h2>
-              <p class="text-md text-gray-500 px-8">
-                Do you really want to exit without saving your work?
-              </p>
-            </div>
-            <div class="p-3 mt-2 text-center space-x-4 md:block">
-              <button
-                class="mb-2 md:mb-0 bg-white px-5 py-2 text-sm shadow-sm font-medium tracking-wider border text-gray-600 rounded-md hover:shadow-lg hover:bg-gray-100"
-              >
-                Save
-              </button>
-              <button
-                @click="onToggle"
-                class="mb-2 md:mb-0 bg-purple-500 border border-purple-500 px-5 py-2 text-sm shadow-sm font-medium tracking-wider text-white rounded-md hover:shadow-lg hover:bg-purple-600"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-          <FormItem />
+            <textarea
+              id="content"
+              class="mt-0.5 w-full resize-none rounded border px-4 py-3 border-gray-300 shadow-sm sm:text-sm"
+              rows="4"
+              v-model="content"
+              placeholder="A quoi pense-tu ?"
+            ></textarea>
+          </label>
         </div>
       </div>
-    </transition>
-  </div>-->
+      <div>
+        <button @click="editPost(id)" type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Soumettre</button>
+        <button @click="onEdit = false" type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring border inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Annuler</button>
+      </div>
+    </div>
+  </div>
+  <!-- Edit  -->
+  <!-- <el-dialog>
+    <dialog id="dialog" aria-labelledby="dialog-title" class="fixed inset-0 size-auto max-h-none max-w-none overflow-y-auto bg-transparent backdrop:bg-transparent">
+      <el-dialog-backdrop class="fixed inset-0 bg-gray-500/75 backdrop-blur-sm transition-opacity data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in"></el-dialog-backdrop>
+
+      <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
+        <el-dialog-panel class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
+          <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+
+          </div>
+          <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+            <button @click="editPost(id)" type="button" command="close" commandfor="dialog" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto">Soumettre</button>
+            <button type="button" command="close" commandfor="dialog" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring border inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Annuler</button>
+          </div>
+        </el-dialog-panel>
+      </div>
+    </dialog>
+  </el-dialog> -->
+  <FooterItem />
 </template>

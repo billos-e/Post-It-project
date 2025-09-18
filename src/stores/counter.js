@@ -36,7 +36,7 @@ export const usePosts = defineStore('postIts', {
     },
     async updatePost(id, updated) {
       await axios.put(`https://post-it.epi-bluelock.bj/notes/${id}`, updated)
-      this.getAllPosts()
+      this.getPost(id)
     },
   },
 })
