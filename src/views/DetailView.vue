@@ -13,6 +13,7 @@ const id = route.params.id;
 
 let title = ref('')
 let content = ref('')
+let update = ref('')
 let onEdit = ref(false)
 
 const deletePost = async(id) => {
@@ -40,6 +41,7 @@ onMounted(async ()=>{
 
   title.value = store.selectedPost.title
   content.value = store.selectedPost.content[0]
+  update.value = store.selectedPost.updatedAt
 })
 </script>
 
@@ -49,7 +51,7 @@ onMounted(async ()=>{
   <main v-if="!onEdit">
     <div>
       <h1 class="font-bold">{{ title }}</h1>
-      <span>modifié le : {{ store.selectedPost.updatedAt }}</span>
+      <span>modifié le : {{ update }}</span>
       <p>{{ content }}</p>
     </div>
 
