@@ -10,6 +10,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id;
 
+// ajout gestion erreur et page vide
 const deletePost = async(id) => {
   // add alert
   store.deletePost(id)

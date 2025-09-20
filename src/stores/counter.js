@@ -12,6 +12,8 @@ export const useCounterStore = defineStore('counter', () => {
   return { count, doubleCount, increment }
 })
 
+// ajout gestion erreur
+
 const url = 'https://post-it.epi-bluelock.bj/notes/'
 
 export const usePosts = defineStore('postIts', {

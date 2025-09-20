@@ -7,6 +7,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { usePosts } from '@/stores/counter';
 
 //penser à gerer la persistance
+// ajout gestion erreur et page vide
 
 const store = usePosts()
 
