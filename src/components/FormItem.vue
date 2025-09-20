@@ -1,28 +1,29 @@
 <script setup>
-import { usePosts } from '@/stores/counter';
-import { ref, onMounted } from 'vue';
+import { watch, reactive } from 'vue';
 
-const store = usePosts()
 const emit = defineEmits(['form-submit'])
+const props = defineProps({
+  initialDetails: Object,
+  instruction: String
+})
 
-let title = ref('')
-let content = ref('')
+let details = reactive({
+  title: '',
+  content: ['']
+})
+
+watch(()=> props.initialDetails, (newData) => {
+
+  if(props.initialDetails){
+    details.title = newData.title || '',
+    details.content[0] = newData.content[0] || ''
+  }
+}, {immediate: true})
 
 const renderData = () => {
   // verifier si entrees vides
-  emit('form-submit', {
-    "title": title.value,
-    "content": [ content.value ]
-  })
+  emit('form-submit', {...details})
 }
-
-onMounted(()=>{
-  if (store.selectedPost) {
-
-    title.value = store.selectedPost.title
-    content.value = store.selectedPost.content[0]
-  }
-})
 </script>
 
 <template>
@@ -35,7 +36,7 @@ onMounted(()=>{
           type="text"
           id="title"
           class="mt-0.5 w-full rounded border px-4 py-3 border-gray-300 shadow-sm sm:text-sm"
-          v-model="title"
+          v-model="details.title"
           placeholder="Court et descriptif"
         />
       </label>
@@ -46,7 +47,7 @@ onMounted(()=>{
           id="content"
           class="mt-0.5 w-full resize-none rounded border px-4 py-3 border-gray-300 shadow-sm sm:text-sm"
           rows="4"
-          v-model="content"
+          v-model="details.content[0]"
           placeholder="A quoi pense-tu ?"
         ></textarea>
       </label>
