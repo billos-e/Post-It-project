@@ -1,5 +1,3 @@
-<script setup>
-</script>
 
 <template>
 <footer class="bg-neutral-100 text-center text-neutral-600 ">
