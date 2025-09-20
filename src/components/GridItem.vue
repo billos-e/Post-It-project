@@ -1,10 +1,7 @@
 <script setup >
-import { ref } from 'vue'
 import { usePosts } from '@/stores/counter';
 
-
 const store = usePosts()
-console.log(store);
 </script>
 
 <template>
