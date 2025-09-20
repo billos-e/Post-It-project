@@ -33,7 +33,7 @@ export const usePosts = defineStore('postIts', {
     },
     async getPost(id) {
       const respo = await axios.get(url + id)
-      this.selectedPost = respo.data
+      this.selectedPost = respo.data;
       console.log('Chargement post: ' + id);
     },
     async deletePost(id) {
@@ -43,8 +43,8 @@ export const usePosts = defineStore('postIts', {
     },
     async updatePost(id, updated) {
       await axios.put(url + id, updated)
-      this.getPost(id)
       console.log('Modification post: ' + id);
+      this.getPost(id)
     },
   },
 })
