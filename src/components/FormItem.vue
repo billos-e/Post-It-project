@@ -23,6 +23,8 @@ watch(()=> props.initialDetails, (newData) => {
 const renderData = () => {
   // verifier si entrees vides
   emit('form-submit', {...details})
+  details.title = '',
+  details.content = ['']
 }
 </script>
 
@@ -35,7 +37,7 @@ const renderData = () => {
         <input
           type="text"
           id="title"
-          class="mt-0.5 w-full rounded border px-4 py-3 border-gray-300 shadow-sm sm:text-sm"
+          class="mt-0.5 w-full rounded px-4 py-3 shadow-inner shadow-gray-300 focus:boder-blue-100 sm:text-sm"
           v-model="details.title"
           placeholder="Court et descriptif"
         />
@@ -45,7 +47,7 @@ const renderData = () => {
 
         <textarea
           id="content"
-          class="mt-0.5 w-full resize-none rounded border px-4 py-3 border-gray-300 shadow-sm sm:text-sm"
+          class="mt-0.5 w-full resize-none px-4 py-3 shadow-inner shadow-gray-300 focus:boder-blue-100 sm:text-sm"
           rows="4"
           v-model="details.content[0]"
           placeholder="A quoi pense-tu ?"
@@ -53,8 +55,8 @@ const renderData = () => {
       </label>
     </div>
     <div class="flex justify-end gap-3 pt-6 ">
-      <button @click="renderData" type="button" command="close" commandfor="dialog" class="mt-3 inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:mt-0 sm:w-auto">Soumettre</button>
-      <button type="button" command="close" commandfor="dialog" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring border inset-ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Annuler</button>
+      <button @click="renderData" type="button" command="close" commandfor="dialog" class="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold bg-orange-200 text-orange-700 border border-orange-200 font-medium rounded-lg hover:bg-orange-100 hover:border-orange-300 disabled:opacity-200 disabled:cursor-not-allowed disabled:hover:bg-orange-200  sm:mt-0 sm:w-auto">Soumettre</button>
+      <button type="button" command="close" commandfor="dialog" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs inset-ring border inset-ring-gray-300 hover:bg-blue-50 sm:mt-0 sm:w-auto">Annuler</button>
     </div>
   </div>
 </template>
