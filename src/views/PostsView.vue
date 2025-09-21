@@ -5,19 +5,21 @@ import FormItem from '../components/FormItem.vue'
 import GridItem from '../components/GridItem.vue'
 import { usePosts } from '@/stores/counter';
 import { useRouter } from 'vue-router'
-import { onMounted, onUnmounted } from 'vue';
+import { onMounted } from 'vue';
 
 //penser à gerer la persistance
 // ajout gestion erreur et page vide
 
 const store = usePosts();
 const router = useRouter();
-let rocketGetter = null
+// let rocketGetter = null
 
+
+// ajouter suppression des post individuel
 const deletePost = (id) => {
     if(confirm('Voulez vous vraiment supprimer ce post ?') == true) {
 
-    store.deletePost(id)
+    store.deleteNote(id)
 
     if(store.message == '') {
       router.push({name: 'home'})
@@ -25,20 +27,29 @@ const deletePost = (id) => {
   }
 };
 
+const handleConnectionChange = async () => {
+  if (navigator.onLine) {
+    console.log("Lancement de la synchro")
+    await store.syncWithApi()
+  } else {
+    console.log("Connexion perdue. mode hlocal")
+  }
+}
+
 onMounted(() => {
-  store.getAllPosts()
 
-  rocketGetter = setInterval(() => {
-    console.log("Vérification des mises à jour...")
-    store.getAllPosts()
-  }, 15000)
-})
+  window.addEventListener('online', handleConnectionChange)
+  // window.addEventListener('offline', handleConnectionChange)
 
-onUnmounted(() => {
-  clearInterval(rocketGetter)
+  if (navigator.onLine) {
+    store.syncWithApi()
+  }
+
+  setInterval(async () => {
+    if(navigator.onLine) await store.handleConnectionChange();
+  }, 60000)
 })
 // store.getAllPosts();
-store.selectedPost = null;
 </script>
 
 <template >
@@ -60,7 +71,7 @@ store.selectedPost = null;
 
           <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
             <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-              <FormItem @form-submit="store.addPost" />
+              <FormItem @form-submit="store.createNote" />
             </div>
           </div>
         </dialog>

@@ -14,7 +14,7 @@ let rocketGetter = null
 
 const deletePost = () => {
   if (confirm('Voulez vous vraiment supprimer ce post ?') == true) {
-    store.deletePost(id)
+    store.deleteNote(id)
 
     if (store.message == '') {
       router.push({name: 'home'})
@@ -23,8 +23,8 @@ const deletePost = () => {
 }
 
 const editPost = (updatedValue) => {
-  // verifier si champs vides
-  store.updatePost(id, updatedValue)
+
+  store.updateNote(id, updatedValue)
 }
 
 const formatFrenchDate = (isoString) => {
@@ -48,11 +48,11 @@ const formatFrenchDate = (isoString) => {
 }
 
 onMounted(() => {
-  store.getPost(id)
-
+  store.retrieveNote(id)
+  // pas obligatoire mais bon
   rocketGetter = setInterval(() => {
     console.log("Vérification des mises à jour...")
-    store.getPost(id)
+    store.retrieveNote(id)
   }, 30000)
 })
 
