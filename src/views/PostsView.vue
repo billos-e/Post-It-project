@@ -38,6 +38,7 @@ onUnmounted(() => {
   clearInterval(rocketGetter)
 })
 // store.getAllPosts();
+store.selectedPost = null;
 </script>
 
 <template >
