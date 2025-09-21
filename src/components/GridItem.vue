@@ -7,6 +7,7 @@ const store = usePosts()
 <template>
   <section class="bg-gray-2 pt-20 pb-10 lg:pt-[120px] lg:pb-20">
     <div class="container mx-auto">
+      <div v-if="store.message != ''" class="text-gray-800 italic text-center">{{ store.message }}</div>
       <div class="grid grid-cols-4 gap-3 mx-2">
         <template v-for="post in store.posts" :key="post._id">
           <RouterLink :to="{name: 'note', params: { id: post._id }}">

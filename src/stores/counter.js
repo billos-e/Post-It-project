@@ -20,12 +20,23 @@ export const usePosts = defineStore('postIts', {
   state: () => ({
     posts: [],
     selectedPost: null,
+    message : ''
   }),
   actions: {
     async getAllPosts() {
-      const respo = await axios.get(url)
-      this.posts = respo.data.notes
-      console.log('Chargement tous les posts');
+      try {
+
+        this.message = ''
+        const respo = await axios.get(url)
+        this.posts = respo.data.notes
+        console.log('Chargement tous les posts');
+
+        if(this.posts == []) this.message = 'Pas de notes jusque là'
+      } catch (err) {
+        this.message = 'Erreur lors du chargement'
+        console.log('Error:' + err);
+
+      }
 
     },
     async addPost(payload) {
