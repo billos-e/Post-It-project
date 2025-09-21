@@ -5,12 +5,14 @@ import FormItem from '../components/FormItem.vue'
 import GridItem from '../components/GridItem.vue'
 import { usePosts } from '@/stores/counter';
 import { useRouter } from 'vue-router'
+import { onMounted, onUnmounted } from 'vue';
 
 //penser à gerer la persistance
 // ajout gestion erreur et page vide
 
 const store = usePosts();
-const router = useRouter()
+const router = useRouter();
+let rocketGetter = null
 
 
 // ajouter suppression des post individuel
@@ -25,8 +27,19 @@ const deletePost = (id) => {
   }
 };
 
-store.getAllPosts()
-store.selectedPost = null;
+onMounted(() => {
+  store.getAllPosts()
+
+  rocketGetter = setInterval(() => {
+    console.log("Vérification des mises à jour...")
+    store.getAllPosts()
+  }, 15000)
+})
+
+onUnmounted(() => {
+  clearInterval(rocketGetter)
+})
+// store.getAllPosts();
 </script>
 
 <template >

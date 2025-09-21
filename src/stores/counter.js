@@ -107,4 +107,5 @@ export const usePosts = defineStore('postIts', {
       }
     },
   },
+  persist: true,
 })

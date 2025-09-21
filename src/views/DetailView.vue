@@ -4,11 +4,13 @@ import FooterItem from '../components/FooterItem.vue'
 import FormItem from '../components/FormItem.vue'
 import { usePosts } from '@/stores/counter'
 import { useRoute, useRouter, RouterLink } from 'vue-router'
+import { onMounted, onUnmounted } from 'vue'
 
 const store = usePosts()
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
+let rocketGetter = null
 
 // ajout gestion erreur et page vide
 const deletePost = () => {
@@ -46,7 +48,19 @@ const formatFrenchDate = (isoString) => {
   return `${formattedDate} à ${formattedTime}`
 }
 
-store.getPost(id)
+onMounted(() => {
+  store.getPost(id)
+
+  rocketGetter = setInterval(() => {
+    console.log("Vérification des mises à jour...")
+    store.getPost(id)
+  }, 30000)
+})
+
+onUnmounted(() => {
+  clearInterval(rocketGetter)
+})
+// store.getPost(id)
 </script>
 
 <template>
@@ -163,7 +177,7 @@ store.getPost(id)
           </div>
         </div>
         <div v-else class="text-gray-800 italic text-center">
-          {{ store.message == '' ? 'Rien à afficher' : store.message }}
+          {{ store.message == '' ? 'Votre note arrive.. ou pas !' : store.message }}
         </div>
       </div>
     </div>
