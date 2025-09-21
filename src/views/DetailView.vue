@@ -12,7 +12,6 @@ const router = useRouter()
 const id = route.params.id
 let rocketGetter = null
 
-// ajout gestion erreur et page vide
 const deletePost = () => {
   if (confirm('Voulez vous vraiment supprimer ce post ?') == true) {
     store.deletePost(id)

@@ -14,8 +14,6 @@ const store = usePosts();
 const router = useRouter();
 let rocketGetter = null
 
-
-// ajouter suppression des post individuel
 const deletePost = (id) => {
     if(confirm('Voulez vous vraiment supprimer ce post ?') == true) {
 
