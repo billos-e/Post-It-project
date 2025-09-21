@@ -7,11 +7,11 @@ const store = usePosts()
 <template>
   <section class="bg-gray-2 pt-5 pb-10 lg:pb-20">
     <div class="container mx-auto">
-      <div v-if="store.posts.length == 0" class="text-gray-800 italic text-center">
+      <div v-if="store.visibleNotes.length == 0" class="text-gray-800 italic text-center">
           {{ store.message == '' ? 'Chargement...' : store.message }}
       </div>
       <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4">
-        <template v-for="post in store.posts" :key="post._id">
+        <template v-for="post in store.visibleNotes" :key="post._id">
           <div class="relative group">
             <button
               @click="$emit('delete', post._id)"
@@ -32,6 +32,7 @@ const store = usePosts()
                 ></path>
               </svg>
             </button>
+            {{ post }}
             <RouterLink :to="{name: 'note', params: { id: post._id }}">
               <div class=" max-w-sm h-full p-6 bg-orange-100 border border-gray-200 rounded-sm rounded-br-3xl hover:shadow-lg ">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{ post.title.slice(0, 15) }}</h5>

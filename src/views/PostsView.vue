@@ -5,28 +5,52 @@ import FormItem from '../components/FormItem.vue'
 import GridItem from '../components/GridItem.vue'
 import { usePosts } from '@/stores/counter';
 import { useRouter } from 'vue-router'
+import { onMounted } from 'vue';
 
 //penser à gerer la persistance
 // ajout gestion erreur et page vide
 
 const store = usePosts();
-const router = useRouter()
+const router = useRouter();
+// let rocketGetter = null
 
 
 // ajouter suppression des post individuel
 const deletePost = (id) => {
     if(confirm('Voulez vous vraiment supprimer ce post ?') == true) {
 
-    store.deletePost(id)
+    store.deleteNote(id)
 
     if(store.message == '') {
-      router.push('/')
+      router.push({name: 'home'})
     }
   }
 };
 
-store.getAllPosts()
+const handleConnectionChange = async () => {
+  if (navigator.onLine) {
+    console.log("Lancement de la synchro")
+    await store.syncWithApi()
+  } else {
+    console.log("Connexion perdue. mode hlocal")
+  }
+}
+
+onMounted(() => {
+
+  window.addEventListener('online', handleConnectionChange)
+  // window.addEventListener('offline', handleConnectionChange)
+
+  if (navigator.onLine) {
+    store.syncWithApi()
+  }
+
+  setInterval(async () => {
+    if(navigator.onLine) await handleConnectionChange();
+  }, 90000)
+})
 store.selectedPost = null;
+// store.getAllPosts();
 </script>
 
 <template >
@@ -48,7 +72,7 @@ store.selectedPost = null;
 
           <div tabindex="0" class="flex min-h-full items-end justify-center p-4 text-center focus:outline-none sm:items-center sm:p-0">
             <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all data-closed:translate-y-4 data-closed:opacity-0 data-enter:duration-300 data-enter:ease-out data-leave:duration-200 data-leave:ease-in sm:my-8 sm:w-full sm:max-w-lg data-closed:sm:translate-y-0 data-closed:sm:scale-95">
-              <FormItem @form-submit="store.addPost" />
+              <FormItem @form-submit="store.createNote" />
             </div>
           </div>
         </dialog>
@@ -58,7 +82,7 @@ store.selectedPost = null;
 
   <footer>
 
-    <FooterItem class="bottom-fixing sticky bottom-0" />
+    <FooterItem class="bottom-fixing sticky right-0 left-0 bottom-0" />
   </footer>
 
 </template>

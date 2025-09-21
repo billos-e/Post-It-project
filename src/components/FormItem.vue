@@ -22,6 +22,8 @@ watch(()=> props.initialDetails, (newData) => {
 
 const renderData = () => {
   // verifier si entrees vides
+  if(details.title.trim() == '' || details.content[0].trim() == '' ) return alert('les champs ne doivent pas être vide');
+
   emit('form-submit', {...details})
   details.title = '',
   details.content = ['']
@@ -32,7 +34,7 @@ const renderData = () => {
   <div class=" bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4 mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
     <div class="mt-2">
       <label for="title">
-        <span class="text-sm font+9-medium text-gray-700"> Titre </span>
+        <span class="text-sm font+9-medium text-black-700 font-semibold">*Titre </span>
 
         <input
           type="text"
@@ -43,7 +45,7 @@ const renderData = () => {
         />
       </label>
       <label for="content">
-        <span class="text-sm font-medium text-gray-700"> Contenu  </span>
+        <span class="text-sm font-medium text-black-700 font-semibold">*Contenu </span>
 
         <textarea
           id="content"
