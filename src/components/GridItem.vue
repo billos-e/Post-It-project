@@ -8,7 +8,7 @@ const store = usePosts()
   <section class="bg-gray-2 pt-5 pb-10 lg:pb-20">
     <div class="container mx-auto">
       <div v-if="store.message != ''" class="text-gray-800 italic text-center">{{ store.message }}</div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mx-2">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4">
         <template v-for="post in store.posts" :key="post._id">
           <div class="relative group">
             <button
@@ -31,7 +31,7 @@ const store = usePosts()
               </svg>
             </button>
             <RouterLink :to="{name: 'note', params: { id: post._id }}">
-              <div class="max-w-sm h-full p-6 bg-white border border-gray-200 rounded-sm hover:shadow-lg ">
+              <div class=" max-w-sm h-full p-6 bg-orange-100 border border-gray-200 rounded-sm rounded-br-3xl hover:shadow-lg ">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{ post.title.slice(0, 15) }}</h5>
                 <p class="mb-3 break-words whitespace-pre-wrap font-normal text-gray-700 ">{{ post.content[0].slice(0, 50) }} ...</p>
               </div>
