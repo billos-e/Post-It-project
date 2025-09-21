@@ -30,16 +30,11 @@ store.selectedPost = null;
 </script>
 
 <template >
-  <div class="hidden">
-
-    {{ store.getAllPosts() }}
-  </div>
   <header class="sticky top-0 left-0 z-50">
 
     <HeaderItem />
   </header>
   <main class="flex-1">
-
     <div class="h-full">
 
       <div id="edit-line" class=" flex flex-row items-center justify-end gap-4">

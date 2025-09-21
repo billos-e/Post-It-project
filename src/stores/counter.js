@@ -12,8 +12,6 @@ export const useCounterStore = defineStore('counter', () => {
   return { count, doubleCount, increment }
 })
 
-// ajout gestion erreur
-
 const url = 'https://post-it.epi-bluelock.bj/notes/'
 
 export const usePosts = defineStore('postIts', {
@@ -34,8 +32,11 @@ export const usePosts = defineStore('postIts', {
         if(this.posts.length == 0) this.message = 'Pas de notes jusque là'
 
       } catch (err) {
-        this.message = 'Erreur lors du chargement'
-        console.log('Error:' + err);
+        if(err.response) {
+          this.message = err.response.data.error.message
+        } else this.message = 'Erreur de connexion, verifiez le reseau'
+
+        console.log('Error: ' + this.message);
       }
 
     },

@@ -7,8 +7,10 @@ const store = usePosts()
 <template>
   <section class="bg-gray-2 pt-5 pb-10 lg:pb-20">
     <div class="container mx-auto">
-      <div v-if="store.message != ''" class="text-gray-800 italic text-center">{{ store.message }}</div>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4">
+      <div v-if="store.posts.length == 0" class="text-gray-800 italic text-center">
+          {{ store.message == '' ? 'Chargement...' : store.message }}
+      </div>
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4">
         <template v-for="post in store.posts" :key="post._id">
           <div class="relative group">
             <button
