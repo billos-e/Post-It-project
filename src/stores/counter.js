@@ -31,34 +31,79 @@ export const usePosts = defineStore('postIts', {
         this.posts = respo.data.notes
         console.log('Chargement tous les posts');
 
-        if(this.posts == []) this.message = 'Pas de notes jusque là'
+        if(this.posts.length == 0) this.message = 'Pas de notes jusque là'
+
       } catch (err) {
         this.message = 'Erreur lors du chargement'
         console.log('Error:' + err);
-
       }
 
     },
     async addPost(payload) {
-      await axios.post(url, payload)
-      this.getAllPosts()
-      console.log('Ajout nouveau post');
+      try {
+        this.message = ''
+        await axios.post(url, payload)
+        this.getAllPosts()
+        console.log('Ajout nouveau post');
+      }catch (err) {
+        alert("Erreur lors de l'ajout")
+        console.log("Adding error:" + err);
+
+        if(err.response) {
+          this.message = err.response.data.error.message
+        } else this.message = 'Erreur de connexion, verifiez le reseau'
+
+        console.log('Error: ' + this.message);
+
+      }
     },
     async getPost(id) {
-      const respo = await axios.get(url + id)
-      this.selectedPost = respo.data;
-      console.log('Chargement post: ' + id);
+
+      try {
+        this.message = ''
+        const respo = await axios.get(url + id)
+        this.selectedPost = respo.data;
+        console.log('Chargement post: ' + id);
+
+
+      } catch (err) {
+
+        if(err.response) {
+          this.message = err.response.data.error.message
+        } else this.message = 'Erreur de connexion, verifiez le reseau'
+
+        console.log('Error: ' + this.message);
+      }
     },
     async deletePost(id) {
+      try{
+        this.message = ''
+        await axios.delete(url + id)
+        console.log('Suppression post: ' + id);
+        alert(`Post : ${id} supprimé avec succès`)
+        this.getAllPosts()
+      }catch(err){
+        if(err.response) {
+          this.message = err.response.data.error.message
+        } else this.message = 'Erreur de connexion, verifiez le reseau'
 
-      await axios.delete(url + id)
-      // this.getAllPosts()
-      console.log('Suppression post: ' + id);
+        console.log('Error: ' + this.message);
+      }
     },
     async updatePost(id, updated) {
-      await axios.put(url + id, updated)
-      console.log('Modification post: ' + id);
-      this.getPost(id)
+      try{
+        this.message = ''
+        await axios.put(url + id, updated)
+        console.log('Modification post: ' + id);
+        this.getPost(id)
+      }catch(err){
+        if(err.response) {
+          this.message = err.response.data.error.message
+        } else this.message = 'Erreur de connexion, verifiez le reseau'
+
+        console.log('Error: ' + this.message);
+        alert('Error: ' + this.message)
+      }
     },
   },
 })
