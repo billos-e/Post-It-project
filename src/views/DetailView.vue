@@ -13,11 +13,13 @@ const id = route.params.id
 // ajout gestion erreur et page vide
 const deletePost =  () => {
   if(confirm('Voulez vous vraiment supprimer ce post ?') == true) {
-    console.log('Toni ehh');
 
     store.deletePost(id)
+
+    if(store.message == '') {
+      router.push('/')
+    } 
   }
-  router.push('/')
 }
 
 const editPost = (updatedValue) => {
@@ -64,7 +66,7 @@ store.getPost(id)
               Retour aux post-its
             </button>
           </RouterLink>
-          <div class="rounded-xl border-2 shadow-sm relative bg-blue-50 border-blue-200">
+          <div v-if="store.selectedPost" class="rounded-xl border-2 shadow-sm relative bg-blue-50 border-blue-200">
             <div class="absolute top-6 right-6 flex gap-3">
               <button
                 command="show-modal"
@@ -154,6 +156,7 @@ store.getPost(id)
               </div>
             </div>
           </div>
+          <div v-else class="text-gray-800 italic text-center">{{ store.message == '' ? 'Rien à afficher' : store.message }}</div>
         </div>
       </div>
 
