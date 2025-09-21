@@ -22,7 +22,7 @@ watch(()=> props.initialDetails, (newData) => {
 
 const renderData = () => {
   // verifier si entrees vides
-  if(details.title == '' || details.content == '' ) return alert('les champs ne doivent pas être vide');
+  if(details.title.trim() == '' || details.content[0].trim() == '' ) return alert('les champs ne doivent pas être vide');
 
   emit('form-submit', {...details})
   details.title = '',

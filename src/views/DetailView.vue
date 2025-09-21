@@ -17,7 +17,7 @@ const deletePost = () => {
     store.deletePost(id)
 
     if (store.message == '') {
-      router.push('/')
+      router.push({name: 'home'})
     }
   }
 }
