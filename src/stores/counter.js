@@ -87,6 +87,8 @@ export const usePosts = defineStore('postIts', {
 
           // local update
           const respo = await inter.json()
+          alert(respo);
+
           return respo.note_id;
         }
 
@@ -211,10 +213,12 @@ export const usePosts = defineStore('postIts', {
     },
 
     async createNote(noteData) {
+      const now = new Date()
       const newNote = {
         ...noteData,
         _id: uuidv4(),
-        syncStatus: 'new'
+        syncStatus: 'new',
+        updatedAt: now.toISOString()
       }
       this.posts.unshift(newNote)
     },
@@ -260,7 +264,7 @@ export const usePosts = defineStore('postIts', {
             case 'new':
               { const notePayload = { title: note.title, content: [note.content[0]] }
 
-              const realId = this.addPost(notePayload)
+              const realId = await this.addPost(notePayload)
               const index = this.posts.findIndex(n => n._id === note._id)
               if(index !== -1) {
                 this.posts[index]._id = realId
@@ -284,7 +288,7 @@ export const usePosts = defineStore('postIts', {
         }
       }
       console.log('Fin de la synchro');
-      // this.getAllPosts()
+      this.getAllPosts()
     },
   },
   getters: {

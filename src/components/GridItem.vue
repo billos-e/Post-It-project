@@ -32,6 +32,7 @@ const store = usePosts()
                 ></path>
               </svg>
             </button>
+            {{ post }}
             <RouterLink :to="{name: 'note', params: { id: post._id }}">
               <div class=" max-w-sm h-full p-6 bg-orange-100 border border-gray-200 rounded-sm rounded-br-3xl hover:shadow-lg ">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">{{ post.title.slice(0, 15) }}</h5>

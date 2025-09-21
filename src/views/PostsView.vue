@@ -46,9 +46,10 @@ onMounted(() => {
   }
 
   setInterval(async () => {
-    if(navigator.onLine) await store.handleConnectionChange();
-  }, 60000)
+    if(navigator.onLine) await handleConnectionChange();
+  }, 90000)
 })
+store.selectedPost = null;
 // store.getAllPosts();
 </script>
 
@@ -81,7 +82,7 @@ onMounted(() => {
 
   <footer>
 
-    <FooterItem class="bottom-fixing sticky bottom-0" />
+    <FooterItem class="bottom-fixing sticky right-0 left-0 bottom-0" />
   </footer>
 
 </template>
