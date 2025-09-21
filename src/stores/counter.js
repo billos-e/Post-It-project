@@ -39,8 +39,9 @@ export const usePosts = defineStore('postIts', {
       console.log('Chargement post: ' + id);
     },
     async deletePost(id) {
+
       await axios.delete(url + id)
-      this.getAllPosts()
+      // this.getAllPosts()
       console.log('Suppression post: ' + id);
     },
     async updatePost(id, updated) {
