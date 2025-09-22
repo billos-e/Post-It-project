@@ -87,7 +87,6 @@ export const usePosts = defineStore('postIts', {
 
           // local update
           const respo = await inter.json()
-          alert(respo);
 
           return respo.note_id;
         }

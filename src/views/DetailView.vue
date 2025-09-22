@@ -41,7 +41,6 @@ const formatFrenchDate = (isoString) => {
     minute: '2-digit',
   }
 
-  console.log(store.selectedPost)
   const formattedDate = new Intl.DateTimeFormat('fr-FR', dateOptions).format(date)
   const formattedTime = new Intl.DateTimeFormat('fr-FR', timeOptions).format(date)
 
@@ -49,6 +48,8 @@ const formatFrenchDate = (isoString) => {
 }
 
 onMounted(() => {
+
+  store.selectedPost = null;
   store.retrieveNote(id)
   // pas obligatoire mais bon
   rocketGetter = setInterval(() => {
